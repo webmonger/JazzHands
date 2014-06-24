@@ -7,33 +7,39 @@ namespace Screenmedia.IFTTT.JazzHands
 {
 	public class AnimationKeyFrame<T1,T2> : AnimationFrame
 	{
-		public int Time { get; set; }
+		public T1 Time { get; set; }
 
 		public AnimationKeyFrame (AnimationType type, T1 time, T2 value2)
 		{
-		    switch (type)
-		    {
-		        case AnimationType.Frame:
-		            Frame = value2;
-		            break;
-		        case AnimationType.Alpha:
-		            break;
-		        case AnimationType.Hidden:
-		            break;
-		        case AnimationType.Color:
-		            break;
-		        case AnimationType.Angle:
-		            break;
-		        case AnimationType.Transform:
-		            break;
-		        case AnimationType.Scale:
-		            break;
-		        default:
-		            throw new ArgumentOutOfRangeException("type");
-		    }
+			Time = (T1)time;
+			switch (type) {
+			case AnimationType.Frame:
+				Frame = (RectangleF)value2;
+				break;
+			case AnimationType.Alpha:
+				Alpha = value2;
+				break;
+			case AnimationType.Hidden:
+				Hidden = value2;
+				break;
+			case AnimationType.Color:
+				Color = value2;
+				break;
+			case AnimationType.Angle:
+				Angle = value2;
+				break;
+			case AnimationType.Transform:
+				Transform = value2;
+				break;
+			case AnimationType.Scale:
+				Scale = value2;
+				break;
+			default:
+				throw new ArgumentOutOfRangeException ("type");
+			}
 		}
 
-        public List<AnimationKeyFrame<int,double>> KeyFramesWithTimes(AnimationType animationType, params Tuple<int, double>[] pairCount)
+		public List<AnimationKeyFrame<int,double>> KeyFramesWithTimesAndAlphas(AnimationType animationType, params Tuple<int, double>[] pairCount)
 		{
             return KeyFramesGeneric(animationType, pairCount);
 		}
