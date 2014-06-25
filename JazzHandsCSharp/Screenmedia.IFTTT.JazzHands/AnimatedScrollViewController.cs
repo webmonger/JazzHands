@@ -36,7 +36,7 @@ namespace Screenmedia.IFTTT.JazzHands
 
 		public void ScrollViewDidScroll(UIScrollView aScrollView)
 		{
-			Animator.Animate(aScrollView.ContentOffset);
+			Animator.Animate(Convert.ToInt32(aScrollView.ContentOffset.X));
 
 			_isAtEnd = aScrollView.ContentOffset.X >= MaxContentOffsetXForScrollView(aScrollView);
 
