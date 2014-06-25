@@ -1,15 +1,27 @@
 ﻿using System;
 using MonoTouch.UIKit;
 using MonoTouch.Foundation;
+using MonoTouch.ObjCRuntime;
 
 namespace Screenmedia.IFTTT.JazzHands
 {
+
+	public interface IAnimatedScrollViewController 
+	{
+		NSObject WeakDelegate { get; set; }
+		void AnimatedScrollViewControllerDidScrollToEnd(AnimatedScrollViewController animatedScrollViewController);
+		void AnimatedScrollViewControllerDidEndDraggingAtEnd(AnimatedScrollViewController animatedScrollViewController);
+	}
+
+
 	public class AnimatedScrollViewController : UIViewController, IUIScrollViewDelegate
 	{
-		public delegate void AnimatedScrollViewControllerDelegate();
+		//public delegate void AnimatedScrollViewControllerDelegate();
 
 		public Animator Animator{ get; set; }
 		public UIScrollView ScrollView { get; set; }
+
+		public IAnimatedScrollViewController animatedScrolledService;
 
 		private bool _isAtEnd;
 
@@ -22,6 +34,7 @@ namespace Screenmedia.IFTTT.JazzHands
 		{
 			_isAtEnd = false;
 			Animator = new Animator();
+			//animatedScrolledService = Resolve<> new IAnimatedScrollViewController ();
 
 		}
 
@@ -30,45 +43,33 @@ namespace Screenmedia.IFTTT.JazzHands
 			base.ViewDidLoad ();
 
 			ScrollView = new UIScrollView(this.View.Bounds);
-			ScrollView.Delegate = this;
+			ScrollView.Scrolled +=  (sender, args) =>
+			{
+				Animator.Animate(Convert.ToInt32(ScrollView.ContentOffset.X));
+
+				_isAtEnd = ScrollView.ContentOffset.X >= MaxContentOffsetXForScrollView(ScrollView);
+
+				//animatedScrolledService = ScrollView.Delegate;
+
+				if (_isAtEnd && this.RespondsToSelector(new Selector("AnimatedScrollViewControllerDidScrollToEnd:")))
+				{
+					//animatedScrolledService.AnimatedScrollViewControllerDidScrollToEnd(this);
+				}
+			};
+
+			ScrollView.ScrollAnimationEnded += (sender, args) => 
+			{
+				//WeakDelegate = scrollView.Delegate;
+				//animatedScrolledService =  ScrollView.Delegate;
+
+				if (_isAtEnd && this.RespondsToSelector(new Selector("AnimatedScrollViewControllerDidEndDraggingAtEnd:")))
+				{
+					//animatedScrolledService.AnimatedScrollViewControllerDidEndDraggingAtEnd(this);
+				}
+			};
+
 			this.View.Add(ScrollView);
 		}
-
-		public void ScrollViewDidScroll(UIScrollView aScrollView)
-		{
-			Animator.Animate(Convert.ToInt32(aScrollView.ContentOffset.X));
-
-			_isAtEnd = aScrollView.ContentOffset.X >= MaxContentOffsetXForScrollView(aScrollView);
-
-			Delegate = self.delegate;
-
-			if (_isAtEnd && [delegate respondsToSelector:@selector(AnimatedScrollViewControllerDidScrollToEnd:)]) {
-				Delegate = AnimatedScrollViewControllerDidScrollToEnd(this);
-			}
-		}
-
-		public void ScrollViewDidEndDragging(UIScrollView scrollView, bool willDecelerate)
-		{
-			delegate = self.delegate;
-
-			if (_isAtEnd && [delegate respondsToSelector:@selector(AnimatedScrollViewControllerDidEndDraggingAtEnd:)]) {
-				Delegate = AnimatedScrollViewControllerDidEndDraggingAtEnd(this);
-			}
-		}
-
-		/**
- *  The user has scrolled to the last page of the scrollview.
- *
- *  @param animatedScrollViewController the scroll view controller that's been scrolled
- */
-		public delegate void AnimatedScrollViewControllerDidScrollToEnd(AnimatedScrollViewController animatedScrollViewController);
-
-		/**
- *  The user has released the scrollview (ended dragging) at the last page of the scrollview.
- *
- *  @param animatedScrollViewController the scroll view controller that's been scrolled
- */
-		public delegate void AnimatedScrollViewControllerDidEndDraggingAtEnd(AnimatedScrollViewController animatedScrollViewController);
 
 	}
 }

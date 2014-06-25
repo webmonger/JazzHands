@@ -91,6 +91,10 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\Default-568h%402x.png" />
+    <BundleResource Include="Resources\404_unicorn.png" />
+    <BundleResource Include="Resources\404_unicorn%402x.png" />
+    <BundleResource Include="Resources\IFTTT.png" />
+    <BundleResource Include="Resources\IFTTT%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -99,6 +103,13 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="JHViewController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Screenmedia.IFTTT.JazzHands\Screenmedia.IFTTT.JazzHands.csproj">
+      <Project>{6A7169B3-EE0A-4048-9FE3-9704A2E88F33}</Project>
+      <Name>Screenmedia.IFTTT.JazzHands</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
