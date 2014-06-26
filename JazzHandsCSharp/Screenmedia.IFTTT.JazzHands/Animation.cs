@@ -16,18 +16,20 @@ namespace Screenmedia.IFTTT.JazzHands
 
 		public Animation ()
 		{
-			KeyFrames = new List<AnimationKeyFrame>();
-			_timeline = new List<AnimationFrame> ();
-			_startTime = 0;
+            InitAnimation();
 		}
 
-//		public instancetype AnimationWithView:(UIView view){
-//
-//		}
-
-		private void InitWithView(UIView view){
-			View = view;
-		}
+        public Animation(UIView view) : base()
+        {
+            View = view;
+            InitAnimation();
+        }
+        private void InitAnimation()
+        {
+            KeyFrames = new List<AnimationKeyFrame>();
+            _timeline = new List<AnimationFrame>();
+            _startTime = 0;
+        }
 
 		private void AddKeyFrames(List<AnimationKeyFrame> keyFrames){
 			foreach (AnimationKeyFrame keyFrame in keyFrames) {
@@ -35,7 +37,7 @@ namespace Screenmedia.IFTTT.JazzHands
 			}
 		}
 
-		private void AddKeyFrame(AnimationKeyFrame keyFrame){
+		public void AddKeyFrame(AnimationKeyFrame keyFrame){
 			if (KeyFrames.Count() == 0) {
 				KeyFrames.Add(keyFrame);
 				return;

@@ -30,8 +30,9 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 			
 			// If you have defined a root view controller, set it here:
 			window.RootViewController = new JHViewController();
+		    window.BackgroundColor = UIColor.White;
 
-			// make the window visible
+            // make the window visible
 			window.MakeKeyAndVisible ();
 			
 			return true;

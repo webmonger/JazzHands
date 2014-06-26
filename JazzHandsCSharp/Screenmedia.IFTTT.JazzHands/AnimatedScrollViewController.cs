@@ -30,12 +30,10 @@ namespace Screenmedia.IFTTT.JazzHands
 			return scrollView.ContentSize.Width + scrollView.ContentInset.Right - scrollView.Bounds.Width;
 		}
 
-		public AnimatedScrollViewController (string nibName, NSBundle bundle) : base(nibName, bundle)
+		public AnimatedScrollViewController ()
 		{
 			_isAtEnd = false;
 			Animator = new Animator();
-			//animatedScrolledService = Resolve<> new IAnimatedScrollViewController ();
-
 		}
 
 		public override void ViewDidLoad ()

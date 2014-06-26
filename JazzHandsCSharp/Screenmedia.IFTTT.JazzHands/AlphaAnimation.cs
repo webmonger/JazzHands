@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Linq;
+using MonoTouch.UIKit;
 
 namespace Screenmedia.IFTTT.JazzHands
 {
 	public class AlphaAnimation : Animation
 	{
-		private void Animate(int time)
+	    private void Animate(int time)
 		{
 			if (KeyFrames.Count() <= 1) return;
 

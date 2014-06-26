@@ -12,16 +12,13 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 {
 	public class JHViewController : AnimatedScrollViewController, IAnimatedScrollViewController
 	{
-		private const int NUMBER_OF_PAGES = 4;
+		private const int NumberOfPages = 4;
 
-		public UIImageView wordmark { get; set;}
-		public UIImageView unicorn { get; set;}
-		public UILabel lastLabel { get; set;}
-		public UILabel firstLabel { get; set;}
+		public UIImageView Wordmark { get; set;}
+		public UIImageView Unicorn { get; set;}
+		public UILabel LastLabel { get; set;}
+		public UILabel FirstLabel { get; set;}
 
-		public JHViewController () : base ("JHViewController", null)
-		{
-		}
 
 		public override void DidReceiveMemoryWarning ()
 		{
@@ -35,26 +32,28 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 		{
 			base.ViewDidLoad ();
 
-			ScrollView.ContentSize = new SizeF (NUMBER_OF_PAGES * View.Frame.Width, View.Frame.Height);
+			ScrollView.ContentSize = new SizeF (NumberOfPages * View.Frame.Width, View.Frame.Height);
 
 			ScrollView.PagingEnabled = true;
 			ScrollView.ShowsHorizontalScrollIndicator = false;
 
 			// Perform any additional setup after loading the view, typically from a nib.
+		    PlaceViews();
+		    ConfigureAnimation();
 		}
 
 		private void PlaceViews ()
 		{
 			// put a unicorn in the middle of page two, hidden
-			unicorn = new UIImageView(new UIImage("Unicorn"));
-			AddImage (unicorn);
+            Unicorn = new UIImageView(UIImage.FromBundle("404_unicorn"));
+			AddImage (Unicorn);
 
 			// put a logo on top of it
-			wordmark = new UIImageView(new UIImage("IFTTT"));
-			AddImage (wordmark);
+            Wordmark = new UIImageView(UIImage.FromBundle("IFTTT"));
+			AddImage (Wordmark);
 
 
-			firstLabel = AddLabel ("Introducing Jazz Hands");
+			FirstLabel = AddLabel ("Introducing Jazz Hands");
 
 			UILabel secondPageText = AddLabel ("Brought to you by IFTTT");
 			secondPageText.Frame = RectangleF.Inflate(secondPageText.Frame, TimeForPage(2), -180);
@@ -65,7 +64,7 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 			UILabel fourthPageText = AddLabel ("Optimized for scrolling intros");
 			fourthPageText.Frame =   RectangleF.Inflate(fourthPageText.Frame, TimeForPage(4), 0);
 
-			lastLabel = fourthPageText;
+			LastLabel = fourthPageText;
 		}
 
 
@@ -143,35 +142,45 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 			[unicornFrameAnimation addKeyFrame:[IFTTTAnimationKeyFrame keyFrameWithTime:timeForPage(2) andFrame:self.unicorn.frame]];
 			[unicornFrameAnimation addKeyFrame:[IFTTTAnimationKeyFrame keyFrameWithTime:timeForPage(3)
 				andFrame:CGRectOffset(CGRectInset(self.unicorn.frame, ds, ds), timeForPage(2), dy)]];
+            */
 			// fade the unicorn in on page 2 and out on page 4
-			IFTTTAlphaAnimation *unicornAlphaAnimation = [IFTTTAlphaAnimation animationWithView:self.unicorn];
-			[self.animator addAnimation:unicornAlphaAnimation];
+		    AlphaAnimation unicornAlphaAnimation = new AlphaAnimation();
+            Animator.AddAnimation(unicornAlphaAnimation);
 
-			[unicornAlphaAnimation addKeyFrame:[IFTTTAnimationKeyFrame keyFrameWithTime:timeForPage(1) andAlpha:0.0f]];
-			[unicornAlphaAnimation addKeyFrame:[IFTTTAnimationKeyFrame keyFrameWithTime:timeForPage(2) andAlpha:1.0f]];
-			[unicornAlphaAnimation addKeyFrame:[IFTTTAnimationKeyFrame keyFrameWithTime:timeForPage(3) andAlpha:1.0f]];
-			[unicornAlphaAnimation addKeyFrame:[IFTTTAnimationKeyFrame keyFrameWithTime:timeForPage(4) andAlpha:0.0f]];
+		    unicornAlphaAnimation.AddKeyFrame(new AnimationKeyFrame()
+		    {
+		        Time = TimeForPage(1),
+		        Alpha = 1.0f
+		    });
+		    unicornAlphaAnimation.AddKeyFrame(new AnimationKeyFrame()
+		    {
+		        Time = TimeForPage(2),
+		        Alpha = 1.0f
+		    });
+		    unicornAlphaAnimation.AddKeyFrame(new AnimationKeyFrame()
+		    {
+		        Time = TimeForPage(3),
+		        Alpha = 1.0f
+		    });
+            unicornAlphaAnimation.AddKeyFrame(new AnimationKeyFrame()
+            {
+                Time = TimeForPage(4),
+                Alpha = 0.0f
+            });
 
 			// Fade out the label by dragging on the last page
-			IFTTTAlphaAnimation *labelAlphaAnimation = [IFTTTAlphaAnimation animationWithView:self.lastLabel];
-			[labelAlphaAnimation addKeyFrame:[IFTTTAnimationKeyFrame keyFrameWithTime:timeForPage(4) andAlpha:1.0f]];
-			[labelAlphaAnimation addKeyFrame:[IFTTTAnimationKeyFrame keyFrameWithTime:timeForPage(4.35f) andAlpha:0.0f]];
-			[self.animator addAnimation:labelAlphaAnimation];
-			*/
+//			AlphaAnimation *labelAlphaAnimation = [AlphaAnimation animationWithView:self.lastLabel];
+//			[labelAlphaAnimation addKeyFrame:[AnimationKeyFrame keyFrameWithTime:timeForPage(4) andAlpha:1.0f]];
+//			[labelAlphaAnimation addKeyFrame:[AnimationKeyFrame keyFrameWithTime:timeForPage(4.35f) andAlpha:0.0f]];
+//			[self.animator addAnimation:labelAlphaAnimation];
+			
 		}
 
 		#region IAnimatedScrollViewController implementation
 
-		public NSObject WeakDelegate {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
-		}
+	    public NSObject WeakDelegate { get; set; }
 
-		public void AnimatedScrollViewControllerDidScrollToEnd (AnimatedScrollViewController animatedScrollViewController)
+	    public void AnimatedScrollViewControllerDidScrollToEnd (AnimatedScrollViewController animatedScrollViewController)
 		{
 			System.Console.WriteLine(@"Scrolled to end of scrollview!");
 		}
