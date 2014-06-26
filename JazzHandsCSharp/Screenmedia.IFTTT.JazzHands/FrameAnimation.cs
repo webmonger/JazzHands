@@ -28,8 +28,8 @@ namespace Screenmedia.IFTTT.JazzHands
 		}
 
 		public AnimationFrame FrameForTime (int time,
-			AnimationKeyFrame<int, object> startKeyFrame,
-			AnimationKeyFrame<int, object> endKeyFrame)
+			AnimationKeyFrame startKeyFrame,
+			AnimationKeyFrame endKeyFrame)
 		{
 			int startTime = startKeyFrame.Time;
 			int endTime = endKeyFrame.Time;

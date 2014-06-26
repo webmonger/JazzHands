@@ -14,8 +14,8 @@ namespace Screenmedia.IFTTT.JazzHands
 		}
 
 		private AnimationFrame FrameForTime(int time,
-			AnimationKeyFrame<int, Single> startKeyFrame,
-			AnimationKeyFrame<int, Single> endKeyFrame)
+			AnimationKeyFrame startKeyFrame,
+			AnimationKeyFrame endKeyFrame)
 		{
 			AnimationFrame animationFrame = new AnimationFrame ();
 			animationFrame.Alpha = TweenValueForStartTime (startKeyFrame.Time,
