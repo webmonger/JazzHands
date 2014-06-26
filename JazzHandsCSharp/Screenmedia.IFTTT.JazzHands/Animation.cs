@@ -67,7 +67,7 @@ namespace Screenmedia.IFTTT.JazzHands
 			_startTime = ((AnimationKeyFrame)KeyFrames [0]).Time;
 		}
 
-		protected AnimationFrame FrameForTime (int time,
+		public virtual AnimationFrame FrameForTime (int time,
 			AnimationKeyFrame startKeyFrame,
 			AnimationKeyFrame endKeyFrame)
 		{
@@ -75,7 +75,8 @@ namespace Screenmedia.IFTTT.JazzHands
 			return startKeyFrame;
 		}
 
-		protected AnimationFrame AnimationFrameForTime(int time){
+        public AnimationFrame AnimationFrameForTime(int time)
+        {
 			if (time < _startTime) {
 				return _timeline[0];
 			}
@@ -87,7 +88,7 @@ namespace Screenmedia.IFTTT.JazzHands
 			return _timeline.Last();
 		}
 
-		public void Animate(int time)
+		public virtual void Animate(int time)
 		{
 			Console.WriteLine(@"Hey pal! You need to use a subclass of IFTTTAnimation.");
 		}

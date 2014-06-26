@@ -6,7 +6,7 @@ namespace Screenmedia.IFTTT.JazzHands
 {
 	public class AlphaAnimation : Animation
 	{
-	    private void Animate(int time)
+        public override void Animate(int time)
 		{
 			if (KeyFrames.Count() <= 1) return;
 
@@ -14,7 +14,7 @@ namespace Screenmedia.IFTTT.JazzHands
 			View.Alpha = animationFrame.Alpha;
 		}
 
-		private AnimationFrame FrameForTime(int time,
+		public override AnimationFrame FrameForTime(int time,
 			AnimationKeyFrame startKeyFrame,
 			AnimationKeyFrame endKeyFrame)
 		{
