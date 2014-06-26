@@ -13,7 +13,7 @@ namespace Screenmedia.IFTTT.JazzHands
         {
         }
 
-        public void Animate(int time)
+		public override void Animate(int time)
         {
             if (KeyFrames.Count() <= 1)
                 return;
@@ -31,7 +31,7 @@ namespace Screenmedia.IFTTT.JazzHands
             View.Transform = tempTransform;
         }
 
-        public AnimationFrame FrameForTime(int time,
+		public override AnimationFrame FrameForTime(int time,
             AnimationKeyFrame startKeyFrame,
             AnimationKeyFrame endKeyFrame)
         {
