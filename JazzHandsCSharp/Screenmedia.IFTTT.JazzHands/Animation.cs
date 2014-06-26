@@ -14,10 +14,10 @@ namespace Screenmedia.IFTTT.JazzHands
 		private List<AnimationFrame> _timeline; // AnimationFrames
 		private int _startTime; // in case timeline starts before t=0
 
-		public Animation ()
-		{
-            InitAnimation();
-		}
+//		public Animation ()
+//		{
+//            InitAnimation();
+//		}
 
         public Animation(UIView view) : base()
         {

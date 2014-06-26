@@ -9,6 +9,10 @@ namespace Screenmedia.IFTTT.JazzHands
 {
     public class FrameAnimation : Animation
     {
+        public FrameAnimation(UIView view) : base(view)
+        {
+        }
+
         public void Animate(int time)
         {
             if (KeyFrames.Count() <= 1)

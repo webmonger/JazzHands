@@ -77,7 +77,10 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 		void AddImage(UIImageView iv)
 		{
 			iv.Center = View.Center;
-			iv.Frame = RectangleF.Inflate(iv.Frame, -View.Frame.Size.Width, 100);
+			var frame = iv.Frame;//, View.Frame.Size.Width, -100);
+		    frame.X = View.Frame.Size.Width;
+		    frame.Y = -100;
+		    iv.Frame = frame;
 			iv.Alpha = 0.0f;
 			ScrollView.AddSubview(iv);
 		}
@@ -144,13 +147,13 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 				andFrame:CGRectOffset(CGRectInset(self.unicorn.frame, ds, ds), timeForPage(2), dy)]];
             */
 			// fade the unicorn in on page 2 and out on page 4
-		    AlphaAnimation unicornAlphaAnimation = new AlphaAnimation();
+		    AlphaAnimation unicornAlphaAnimation = new AlphaAnimation(Unicorn);
             Animator.AddAnimation(unicornAlphaAnimation);
 
 		    unicornAlphaAnimation.AddKeyFrame(new AnimationKeyFrame()
 		    {
 		        Time = TimeForPage(1),
-		        Alpha = 1.0f
+		        Alpha = 0.0f
 		    });
 		    unicornAlphaAnimation.AddKeyFrame(new AnimationKeyFrame()
 		    {

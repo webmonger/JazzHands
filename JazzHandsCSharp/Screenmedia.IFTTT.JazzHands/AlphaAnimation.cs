@@ -6,7 +6,11 @@ namespace Screenmedia.IFTTT.JazzHands
 {
 	public class AlphaAnimation : Animation
 	{
-        public override void Animate(int time)
+	    public AlphaAnimation(UIView view) : base(view)
+	    {
+	    }
+
+	    public override void Animate(int time)
 		{
 			if (KeyFrames.Count() <= 1) return;
 
