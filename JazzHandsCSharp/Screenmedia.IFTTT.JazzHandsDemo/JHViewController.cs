@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 
 using MonoTouch.Foundation;
@@ -68,7 +69,7 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 		}
 
 
-		int TimeForPage(int page)
+		int TimeForPage(float page)
 		{
 			return (int)(View.Frame.Size.Width * (page - 1));
 		}
@@ -81,7 +82,7 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 		    frame.X = View.Frame.Size.Width;
 		    frame.Y = -100;
 		    iv.Frame = frame;
-			iv.Alpha = 0.0f;
+			iv.Alpha = 1.0f;
 			ScrollView.AddSubview(iv);
 		}
 
@@ -95,10 +96,10 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 			return l;
 		}
 
-		private void ConfigureAnimation ()
-		{
-			Single dy = 240;
-			/*
+	    private void ConfigureAnimation()
+	    {
+	        Single dy = 240;
+	        /*
 			// apply a 3D zoom animation to the first label
 			Transform3DAnimation labelTransform = Transform3DAnimation.AnimationWithView(firstLabel);
 			Transform3D tt1 = Transform3D.TransformWithM34(0.03f);
@@ -146,7 +147,81 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 			[unicornFrameAnimation addKeyFrame:[IFTTTAnimationKeyFrame keyFrameWithTime:timeForPage(3)
 				andFrame:CGRectOffset(CGRectInset(self.unicorn.frame, ds, ds), timeForPage(2), dy)]];
             */
-			// now, we animate the unicorn
+
+            // apply a 3D zoom animation to the first label
+			Transform3DAnimation labelTransform = new Transform3DAnimation(FirstLabel, 0.3f);
+	        Transform3D tt1 = new Transform3D() {M34 = 0.03f};
+	        Transform3D tt2 = new Transform3D() {M34 = 0.3f};
+	        tt2.Rotate = new Transform3DRotate {Angle = Convert.ToSingle(Math.PI), X = 1, Y = 0, Z = 0};
+	        tt2.Translate = new Transform3DTranslate() {Tx = 0, Ty = 0, Tz = 50};
+			tt2.Scale = new Transform3DScale(){ Sx = 1.0f,Sy = 2.0f,Sz = 1.0f };
+	        labelTransform.AddKeyFrame(new AnimationKeyFrame()
+	        {
+	            Time= TimeForPage(0),
+	            Alpha = 1.0f
+	        });
+	        labelTransform.AddKeyFrame(new AnimationKeyFrame()
+	        {
+	            Time = TimeForPage(1),
+	            Transform = tt1
+	        });
+	        labelTransform.AddKeyFrame(new AnimationKeyFrame()
+	        {
+	            Time = TimeForPage(1.5f),
+	            Transform = tt2
+	        });
+	        labelTransform.AddKeyFrame(new AnimationKeyFrame()
+	        {
+	            Time = TimeForPage(1.5f) + 1,
+	            Alpha = 0.0f
+	        });
+	        Animator.AddAnimation(labelTransform);
+
+	        // let's animate the wordmark
+	        var wordmarkFrameAnimation = new FrameAnimation(Wordmark);
+	        Animator.AddAnimation(wordmarkFrameAnimation);
+
+	        wordmarkFrameAnimation.AddKeyFrames(
+	            new List<AnimationKeyFrame>()
+	            {
+	                new AnimationKeyFrame()
+	                {
+	                    Time = TimeForPage(1),
+	                    Frame = new RectangleF(Wordmark.Frame.Location, new SizeF(200, 0))
+	                },
+	                new AnimationKeyFrame() {Time = TimeForPage(2), Frame = Wordmark.Frame},
+	                new AnimationKeyFrame()
+	                {
+	                    Time = TimeForPage(3),
+	                    Frame = new RectangleF(Wordmark.Frame.Location, new SizeF(View.Frame.Size.Width, dy))
+	                },
+	                new AnimationKeyFrame()
+	                {
+	                    Time = TimeForPage(4),
+	                    Frame = new RectangleF(Wordmark.Frame.Location, new SizeF(0, dy))
+	                },
+	            });
+	    
+
+	        //Rotate a full circle from page 2 to 3
+			var wordmarkRotationAnimation = new AngleAnimation (Wordmark);
+			Animator.AddAnimation (wordmarkRotationAnimation);
+		    wordmarkRotationAnimation.AddKeyFrames(
+		        new List<AnimationKeyFrame>()
+		        {
+		            new AnimationKeyFrame()
+		            {
+		                Time = TimeForPage(2),
+		                Angle = 0.0f
+		            },
+		            new AnimationKeyFrame()
+		            {
+		                Time = TimeForPage(3),
+		                Angle = Convert.ToSingle(2*Math.PI)
+		            }
+		        });
+
+            // now, we animate the unicorn
 			FrameAnimation unicornFrameAnimation = new FrameAnimation(Unicorn);
 			Animator.AddAnimation (unicornFrameAnimation);
 
@@ -162,12 +237,6 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 		        Time = TimeForPage(3),
                 Frame = new RectangleF(TimeForPage(2), dy, RectangleF.Inflate(Unicorn.Frame, -ds, -ds).Width, RectangleF.Inflate(Unicorn.Frame, -ds, -ds).Height),
 		    };
-//		    var newFramePos = animKeyFrame.Frame;
-//		    newFramePos.X = TimeForPage(2);
-//		    newFramePos.Y = dy;
-//		    animKeyFrame.Frame = newFramePos;
-//            Frame = RectangleF.Inflate(Unicorn.Frame, dy, dy)
-//				andFrame:CGRectOffset(CGRectInset(self.unicorn.frame, ds, ds), timeForPage(2), dy)]];
 		    unicornFrameAnimation.AddKeyFrame(animKeyFrame);
 
 			// fade the unicorn in on page 2 and out on page 4

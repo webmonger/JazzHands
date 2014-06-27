@@ -31,7 +31,7 @@ namespace Screenmedia.IFTTT.JazzHands
             _startTime = 0;
         }
 
-		private void AddKeyFrames(List<AnimationKeyFrame> keyFrames){
+	    public void AddKeyFrames(List<AnimationKeyFrame> keyFrames){
 			foreach (AnimationKeyFrame keyFrame in keyFrames) {
 				AddKeyFrame(keyFrame);
 			}
