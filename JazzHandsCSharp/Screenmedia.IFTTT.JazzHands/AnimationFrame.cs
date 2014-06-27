@@ -10,9 +10,9 @@ namespace Screenmedia.IFTTT.JazzHands
 		public Single Alpha;
 		public bool Hidden;
 		public UIColor Color;
-		public Single Angle;
+        public Single Angle;
 		public Transform3D Transform;
-		public Single Scale;
+        public Single Scale;
 	}
 }
 

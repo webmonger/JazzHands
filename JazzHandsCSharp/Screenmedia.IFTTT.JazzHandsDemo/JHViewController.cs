@@ -157,12 +157,18 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 				Time = TimeForPage (2),
 				Frame = Unicorn.Frame
 			});
-			unicornFrameAnimation.AddKeyFrame((new AnimationKeyFrame {
-				Time = TimeForPage (3),
-				Frame = RectangleF.Inflate(Unicorn.Frame, dy, dy)
-			});
-				andFrame:CGRectOffset(CGRectInset(self.unicorn.frame, ds, ds), timeForPage(2), dy)]];
-
+		    var animKeyFrame = new AnimationKeyFrame
+		    {
+		        Time = TimeForPage(3),
+                Frame = new RectangleF(TimeForPage(2), dy, RectangleF.Inflate(Unicorn.Frame, -ds, -ds).Width, RectangleF.Inflate(Unicorn.Frame, -ds, -ds).Height),
+		    };
+//		    var newFramePos = animKeyFrame.Frame;
+//		    newFramePos.X = TimeForPage(2);
+//		    newFramePos.Y = dy;
+//		    animKeyFrame.Frame = newFramePos;
+//            Frame = RectangleF.Inflate(Unicorn.Frame, dy, dy)
+//				andFrame:CGRectOffset(CGRectInset(self.unicorn.frame, ds, ds), timeForPage(2), dy)]];
+		    unicornFrameAnimation.AddKeyFrame(animKeyFrame);
 
 			// fade the unicorn in on page 2 and out on page 4
 		    AlphaAnimation unicornAlphaAnimation = new AlphaAnimation(Unicorn);
