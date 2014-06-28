@@ -9,38 +9,38 @@ namespace Screenmedia.IFTTT.JazzHands
 	{
 		public int Time { get; set; }
 
-//		public AnimationKeyFrame ()//AnimationType type, int time, T2 value2)
-//		{
-////			Time = time;
-////			switch (type) {
-////			case AnimationType.Frame:
-////				Frame = (RectangleF)value2;
-////				break;
-////			case AnimationType.Alpha:
-////				Alpha = value2;
-////				break;
-////			case AnimationType.Hidden:
-////				Hidden = value2;
-////				break;
-////			case AnimationType.Color:
-////				Color = value2;
-////				break;
-////			case AnimationType.Angle:
-////				Angle = value2;
-////				break;
-////			case AnimationType.Transform:
-////				Transform = value2;
-////				break;
-////			case AnimationType.Scale:
-////				Scale = value2;
-////				break;
-////			default:
-////				throw new ArgumentOutOfRangeException ("type");
-////			}
-//		}
+		public AnimationKeyFrame ()//AnimationType type, int time, T2 value2)
+		{
+//			Time = time;
+//			switch (type) {
+//			case AnimationType.Frame:
+//				Frame = (RectangleF)value2;
+//				break;
+//			case AnimationType.Alpha:
+//				Alpha = value2;
+//				break;
+//			case AnimationType.Hidden:
+//				Hidden = value2;
+//				break;
+//			case AnimationType.Color:
+//				Color = value2;
+//				break;
+//			case AnimationType.Angle:
+//				Angle = value2;
+//				break;
+//			case AnimationType.Transform:
+//				Transform = value2;
+//				break;
+//			case AnimationType.Scale:
+//				Scale = value2;
+//				break;
+//			default:
+//				throw new ArgumentOutOfRangeException ("type");
+//			}
+		}
 
 
-        // These methods dont seem to do anything, in .net we can do all this stuff by sending in the values a construction.
+//         These methods dont seem to do anything, in .net we can do all this stuff by sending in the values a construction.
 //		public List<AnimationKeyFrame> KeyFramesWithTimesAndAlphas(params Tuple<int, Single>[] pairCount)
 //		{
 //            if (pairCount.Length > 0)

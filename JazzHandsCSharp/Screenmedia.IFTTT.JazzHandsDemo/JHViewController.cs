@@ -47,23 +47,30 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 		{
 			// put a unicorn in the middle of page two, hidden
             Unicorn = new UIImageView(UIImage.FromBundle("404_unicorn"));
-			AddImage (Unicorn);
+			Unicorn.Center = View.Center;
+			Unicorn.Alpha = 0.0f;
+			var rect = Unicorn.Frame;
+			rect.Offset (new PointF ( View.Frame.Width, -100));
+			Unicorn.Frame = rect;
+			ScrollView.AddSubview(Unicorn);
+
 
 			// put a logo on top of it
             Wordmark = new UIImageView(UIImage.FromBundle("IFTTT"));
-			AddImage (Wordmark);
+			Wordmark.Center = View.Center;
+			var rect2 = Wordmark.Frame;
+			rect2.Offset (new PointF ( View.Frame.Width, -100));
+			Wordmark.Frame = rect2;
+			ScrollView.AddSubview(Wordmark);
 
-
-			FirstLabel = AddLabel ("Introducing Jazz Hands");
-
-			UILabel secondPageText = AddLabel ("Brought to you by IFTTT");
-			secondPageText.Frame = RectangleF.Inflate(secondPageText.Frame, TimeForPage(2), -180);
-
-			UILabel thirdPageText = AddLabel ("Simple keyframe animations");
-			thirdPageText.Frame =   RectangleF.Inflate(thirdPageText.Frame, TimeForPage(3), 100);
-
-			UILabel fourthPageText = AddLabel ("Optimized for scrolling intros");
-			fourthPageText.Frame =   RectangleF.Inflate(fourthPageText.Frame, TimeForPage(4), 0);
+			FirstLabel = AddLabel ("Introducing Jazz Hands", false);
+			ScrollView.AddSubview(FirstLabel);
+			UILabel secondPageText = AddLabel ("Brought to you by IFTTT", true, 2, 180);
+			ScrollView.AddSubview(secondPageText);
+			UILabel thirdPageText = AddLabel ("Simple keyframe animations", true, 3, -100);
+			ScrollView.AddSubview(thirdPageText);
+			UILabel fourthPageText = AddLabel ("Optimized for scrolling intros", true, 4, 0);
+			ScrollView.AddSubview(fourthPageText);
 
 			LastLabel = fourthPageText;
 		}
@@ -74,25 +81,18 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 			return (int)(View.Frame.Size.Width * (page - 1));
 		}
 
-
-		void AddImage(UIImageView iv)
-		{
-			iv.Center = View.Center;
-			var frame = iv.Frame;//, View.Frame.Size.Width, -100);
-		    frame.X = View.Frame.Size.Width;
-		    frame.Y = -100;
-		    iv.Frame = frame;
-			iv.Alpha = 1.0f;
-			ScrollView.AddSubview(iv);
-		}
-
-		private UILabel AddLabel(string text)
+		private UILabel AddLabel(string text, bool IsOffset, int page = 0, float y = 0)
 		{
 			var l = new UILabel();
 			l.Text = text;
 			l.SizeToFit();
 			l.Center = View.Center;
-			ScrollView.AddSubview(l);
+			if (IsOffset) 
+			{
+				var rect = l.Frame;
+				rect.Offset (new PointF (TimeForPage (page), y));
+				l.Frame = rect;
+			}
 			return l;
 		}
 
@@ -181,27 +181,37 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 	        var wordmarkFrameAnimation = new FrameAnimation(Wordmark);
 	        Animator.AddAnimation(wordmarkFrameAnimation);
 
-	        wordmarkFrameAnimation.AddKeyFrames(
-	            new List<AnimationKeyFrame>()
-	            {
-	                new AnimationKeyFrame()
-	                {
-	                    Time = TimeForPage(1),
-	                    Frame = new RectangleF(Wordmark.Frame.Location, new SizeF(200, 0))
-	                },
-	                new AnimationKeyFrame() {Time = TimeForPage(2), Frame = Wordmark.Frame},
-	                new AnimationKeyFrame()
-	                {
-	                    Time = TimeForPage(3),
-	                    Frame = new RectangleF(Wordmark.Frame.Location, new SizeF(View.Frame.Size.Width, dy))
-	                },
-	                new AnimationKeyFrame()
-	                {
-	                    Time = TimeForPage(4),
-	                    Frame = new RectangleF(Wordmark.Frame.Location, new SizeF(0, dy))
-	                },
-	            });
-	    
+			var newAnimaitons = new List<AnimationKeyFrame> ();
+
+			var temp1 = Wordmark.Frame;
+			temp1.Offset (new PointF (200, 0));
+
+			newAnimaitons.Add (new AnimationKeyFrame () {
+				Time = TimeForPage (1),
+				Frame = temp1
+			});
+
+			newAnimaitons.Add (new AnimationKeyFrame() {Time = TimeForPage(2), Frame = Wordmark.Frame});
+
+
+			var temp2 = Wordmark.Frame;
+			temp2.Offset (new PointF (View.Frame.Width, dy));
+
+			newAnimaitons.Add (new AnimationKeyFrame () {
+				Time = TimeForPage (3),
+				Frame = temp2
+			});
+
+			var temp3 = Wordmark.Frame;
+			temp3.Offset (new PointF (0, dy));
+
+			newAnimaitons.Add (new AnimationKeyFrame () {
+				Time = TimeForPage (4),
+				Frame =temp3
+			});
+
+
+		wordmarkFrameAnimation.AddKeyFrames(newAnimaitons);
 
 	        //Rotate a full circle from page 2 to 3
 			var wordmarkRotationAnimation = new AngleAnimation (Wordmark);
@@ -232,10 +242,16 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 				Time = TimeForPage (2),
 				Frame = Unicorn.Frame
 			});
+
+			Unicorn.Frame = RectangleF.Inflate (Unicorn.Frame, -ds, -ds);
+			var uTemp1 = Unicorn.Frame;
+			uTemp1.Offset (TimeForPage (2), dy);
+			Unicorn.Frame = uTemp1;
+
 		    var animKeyFrame = new AnimationKeyFrame
 		    {
 		        Time = TimeForPage(3),
-                Frame = new RectangleF(TimeForPage(2), dy, RectangleF.Inflate(Unicorn.Frame, -ds, -ds).Width, RectangleF.Inflate(Unicorn.Frame, -ds, -ds).Height),
+				Frame = Unicorn.Frame
 		    };
 		    unicornFrameAnimation.AddKeyFrame(animKeyFrame);
 
@@ -265,10 +281,19 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
             });
 
 			// Fade out the label by dragging on the last page
-//			AlphaAnimation *labelAlphaAnimation = [AlphaAnimation animationWithView:self.lastLabel];
-//			[labelAlphaAnimation addKeyFrame:[AnimationKeyFrame keyFrameWithTime:timeForPage(4) andAlpha:1.0f]];
-//			[labelAlphaAnimation addKeyFrame:[AnimationKeyFrame keyFrameWithTime:timeForPage(4.35f) andAlpha:0.0f]];
-//			[self.animator addAnimation:labelAlphaAnimation];
+			AlphaAnimation labelAlphaAnimation = new AlphaAnimation(this.LastLabel);
+
+			labelAlphaAnimation.AddKeyFrame(new AnimationKeyFrame()
+				{
+					Time = TimeForPage(4),
+					Alpha = 1.0f
+				});
+			labelAlphaAnimation.AddKeyFrame(new AnimationKeyFrame()
+				{
+					Time = TimeForPage(4.35f),
+					Alpha = 0.0f
+				});
+			Animator.AddAnimation(labelAlphaAnimation);
 			
 		}
 
