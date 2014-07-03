@@ -1,6 +1,7 @@
 ﻿namespace Screenmedia.IFTTT.JazzHandsFSharpDemo
 
 open System
+open System.Drawing
 open MonoTouch.UIKit
 open MonoTouch.Foundation
 open Screenmedia.IFTTT.JazzHands
@@ -35,12 +36,24 @@ type JHViewController() as this =
     override this.ViewDidLoad () = 
         base.ViewDidLoad ()
 
+        // Place Views
         let unicorn = new UIImageView(UIImage.FromBundle("404_unicorn"))
         unicorn.Center <- base.View.Center
-
+        unicorn.Alpha <- 0.0f
+        let rect = unicorn.Frame
+        rect.Offset (new PointF ( base.View.Frame.Width, -100.0f));
+        unicorn.Frame <- rect;
         base.ScrollView.AddSubview (unicorn)    
 
+        let wordmark = new UIImageView(UIImage.FromBundle("IFTTT"))
+        wordmark.Center <- base.View.Center
+        let rect2 = wordmark.Frame;
+        rect2.Offset (new PointF ( base.View.Frame.Width, -100.0f));
+        wordmark.Frame <- rect2;
+        base.ScrollView.AddSubview(wordmark);
 
+
+        // Configure Animation
 
 
 
