@@ -22,7 +22,7 @@ type JHViewController() as this =
             l.Frame <- rect
         l
 
-    let NumberOfPages = 4
+    let numberOfPages = 4.0f
             
 //    let ProductCellRowHeight = 300.0f
 //
@@ -48,6 +48,11 @@ type JHViewController() as this =
 
     override this.ViewDidLoad () = 
         base.ViewDidLoad ()
+
+        base.ScrollView.ContentSize = new SizeF (numberOfPages * this.View.Frame.Width, this.View.Frame.Height)
+
+        base.ScrollView.PagingEnabled <- true
+        base.ScrollView.ShowsHorizontalScrollIndicator <- false
 
         // Place Views
         let unicorn = new UIImageView(UIImage.FromBundle("404_unicorn"))
@@ -75,8 +80,39 @@ type JHViewController() as this =
         base.ScrollView.AddSubview(fourthPageText)
 
         // Configure Animation
+//        let dy = 240
+
+        // let's animate the wordmark
+//        var wordmarkFrameAnimation = new FrameAnimation(Wordmark);
+//        Animator.AddAnimation(wordmarkFrameAnimation);
+//
+//        var newAnimaitons = new List<AnimationKeyFrame> ();
+//
+//        var temp1 = Wordmark.Frame;
+//        temp1.Offset (new PointF (200, 0));
+//
+//        newAnimaitons.Add (new AnimationKeyFrame () {
+//            Time = TimeForPage (1),
+//            Frame = temp1
+//        });
+//
+//        newAnimaitons.Add (new AnimationKeyFrame() {Time = TimeForPage(2), Frame = Wordmark.Frame});
 
 
+    interface IAnimatedScrollViewController with
+        member x.WeakDelegate
+            with get (): NSObject = 
+                raise (System.NotImplementedException())
+        
+        member x.WeakDelegate
+            with set (v: NSObject): unit = 
+                raise (System.NotImplementedException())
+        
+        member x.AnimatedScrollViewControllerDidScrollToEnd(animatedScrollViewController: AnimatedScrollViewController): unit = 
+            System.Console.WriteLine "Scrolled to end of scrollview!"
+        
+        member x.AnimatedScrollViewControllerDidEndDraggingAtEnd(animatedScrollViewController: AnimatedScrollViewController): unit = 
+            System.Console.WriteLine "Scrolled to end of scrollview!"
 
 [<Register ("AppDelegate")>]
 type AppDelegate () =
