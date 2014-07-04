@@ -9,6 +9,19 @@ open Screenmedia.IFTTT.JazzHands
 type JHViewController() as this =
     inherit AnimatedScrollViewController() 
 
+    let timeForPage page = this.View.Frame.Size.Width * (page - 1.0f)
+
+    let addLabel text isOffset page y : UILabel = 
+        let l = new UILabel()
+        l.Text <- text
+        l.SizeToFit()
+        l.Center <- this.View.Center
+        if isOffset then
+            let rect : RectangleF = l.Frame
+            rect.Offset (new PointF (timeForPage (page), y))
+            l.Frame <- rect
+        l
+
     let NumberOfPages = 4
             
 //    let ProductCellRowHeight = 300.0f
@@ -52,6 +65,14 @@ type JHViewController() as this =
         wordmark.Frame <- rect2;
         base.ScrollView.AddSubview(wordmark);
 
+        let firstLabel : UILabel = addLabel "Introducing Jazz Hands" false 0.0f 0.0f
+        base.ScrollView.AddSubview(firstLabel)
+        let secondPageText : UILabel = addLabel "Brought to you by IFTTT" true 2.0f 180.0f
+        base.ScrollView.AddSubview(secondPageText)
+        let thirdPageText : UILabel = addLabel "Simple keyframe animations" true 3.0f -100.0f
+        base.ScrollView.AddSubview(thirdPageText)
+        let fourthPageText : UILabel = addLabel "Optimized for scrolling intros" true 4.0f 0.0f
+        base.ScrollView.AddSubview(fourthPageText)
 
         // Configure Animation
 
@@ -67,6 +88,7 @@ type AppDelegate () =
     override this.FinishedLaunching (app, options) =
         // If you have defined a root view controller, set it here:
         window.RootViewController <- new JHViewController ()
+        window.BackgroundColor <- UIColor.White
         window.MakeKeyAndVisible ()
         true
 
