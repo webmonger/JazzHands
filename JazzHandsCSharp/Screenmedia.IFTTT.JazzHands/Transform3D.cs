@@ -20,17 +20,18 @@ namespace Screenmedia.IFTTT.JazzHands
 			};
 			Rotate = new Transform3DRotate()
 			{
-				Angle = 0.0f,
-				X = 0.0f,
-				Y = 0.0f,
-				Z = 0.0f
+				Angle = 1.0f,
+				X = 1.0f,
+				Y = 1.0f,
+				Z = 1.0f
 			};
 			Translate = new Transform3DTranslate()
 			{
-				Tx = 0.0f,
-				Ty = 0.0f,
-				Tz = 0.0f
+				Tx = 1.0f,
+				Ty = 1.0f,
+				Tz = 1.0f
 			};
+			M34 = 0.3f;
         }
     }
 

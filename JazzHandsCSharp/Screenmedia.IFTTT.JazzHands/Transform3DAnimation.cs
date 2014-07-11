@@ -4,6 +4,7 @@ using System.Drawing;
 using MonoTouch.CoreAnimation;
 using MonoTouch.CoreGraphics;
 using MonoTouch.UIKit;
+using MonoTouch.Foundation;
 
 namespace Screenmedia.IFTTT.JazzHands
 {
@@ -28,23 +29,24 @@ namespace Screenmedia.IFTTT.JazzHands
 			CATransform3D transform = CATransform3D.Identity;
 			transform.m34 = _m34;
 			//if (animationFrame.Transform.Rotate != null)
-				transform.Rotate (
-					animationFrame.Transform.Rotate.Angle,
-					animationFrame.Transform.Rotate.X,
-					animationFrame.Transform.Rotate.Y,
-					animationFrame.Transform.Rotate.Z);
-			//if (animationFrame.Transform.Scale != null)
-				transform.Scale (
-					animationFrame.Transform.Scale.Sx,
-					animationFrame.Transform.Scale.Sy,
-					animationFrame.Transform.Scale.Sz);
-			//if (animationFrame.Transform.Translate != null)
-				transform.Translate (
-					animationFrame.Transform.Translate.Tx,
-					animationFrame.Transform.Translate.Ty,
-					animationFrame.Transform.Translate.Tz);
 
-			View.Layer.Transform = transform;
+			transform.Rotate (
+				animationFrame.Transform.Rotate.Angle,
+				animationFrame.Transform.Rotate.X,
+				animationFrame.Transform.Rotate.Y,
+				animationFrame.Transform.Rotate.Z);
+			//if (animationFrame.Transform.Scale != null)
+			transform.Scale (
+				animationFrame.Transform.Scale.Sx,
+				animationFrame.Transform.Scale.Sy,
+				animationFrame.Transform.Scale.Sz);
+			//if (animationFrame.Transform.Translate != null)
+			transform.Translate (
+				animationFrame.Transform.Translate.Tx,
+				animationFrame.Transform.Translate.Ty,
+				animationFrame.Transform.Translate.Tz);
+
+			this.View.Layer.Transform = transform;
 		}
 
 	    public override AnimationFrame FrameForTime(int time,
