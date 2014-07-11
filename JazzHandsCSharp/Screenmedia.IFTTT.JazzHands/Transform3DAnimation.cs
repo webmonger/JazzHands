@@ -22,32 +22,48 @@ namespace Screenmedia.IFTTT.JazzHands
 			if (KeyFrames.Count () <= 1)
 				return;
 
-			AnimationFrame animationFrame = AnimationFrameForTime (time);
-			if (animationFrame.Transform == null)
+			AnimationFrame aFrame = AnimationFrameForTime (time);
+			if (aFrame.Transform == null)
 				return;
 
 			CATransform3D transform = CATransform3D.Identity;
-			transform.m34 = _m34;
-			//if (animationFrame.Transform.Rotate != null)
+			transform.m34 = aFrame.Transform.M34;
 
-			transform.Rotate (
-				animationFrame.Transform.Rotate.Angle,
-				animationFrame.Transform.Rotate.X,
-				animationFrame.Transform.Rotate.Y,
-				animationFrame.Transform.Rotate.Z);
-			//if (animationFrame.Transform.Scale != null)
-			transform.Scale (
-				animationFrame.Transform.Scale.Sx,
-				animationFrame.Transform.Scale.Sy,
-				animationFrame.Transform.Scale.Sz);
-			//if (animationFrame.Transform.Translate != null)
-			transform.Translate (
-				animationFrame.Transform.Translate.Tx,
-				animationFrame.Transform.Translate.Ty,
-				animationFrame.Transform.Translate.Tz);
+			transform = CATransform3D.MakeRotation (
+				aFrame.Transform.Rotate.Angle,
+				aFrame.Transform.Rotate.X,
+				aFrame.Transform.Rotate.Y,
+				aFrame.Transform.Rotate.Z);
+
+			// Scale
+			transform.m11 = aFrame.Transform.Scale.Sx;
+			transform.m22 = aFrame.Transform.Scale.Sy;
+			transform.m33 = aFrame.Transform.Scale.Sz;
+
+			// Translate
+			transform.m41 = aFrame.Transform.Translate.Tx;
+			transform.m42 = aFrame.Transform.Translate.Ty;
+			transform.m43 = aFrame.Transform.Translate.Tz;
+
+//			transform.Rotate (
+//				aFrame.Transform.Rotate.Angle,
+//				aFrame.Transform.Rotate.X,
+//				aFrame.Transform.Rotate.Y,
+//				aFrame.Transform.Rotate.Z);
+//			transform.Scale (
+//				aFrame.Transform.Scale.Sx,
+//				aFrame.Transform.Scale.Sy,
+//				aFrame.Transform.Scale.Sz);
+//
+//			transform.Translate (
+//				aFrame.Transform.Translate.Tx,
+//				aFrame.Transform.Translate.Ty,
+//				aFrame.Transform.Translate.Tz);
 
 			this.View.Layer.Transform = transform;
+
 		}
+
 
 	    public override AnimationFrame FrameForTime(int time,
             AnimationKeyFrame startKeyFrame,
@@ -56,6 +72,8 @@ namespace Screenmedia.IFTTT.JazzHands
 			AnimationFrame animationFrame = new AnimationFrame();
 			animationFrame.Transform = new Transform3D();
 			animationFrame.Transform.M34 = startKeyFrame.Transform.M34;
+
+
 
 			//if (startKeyFrame.Transform.Translate != null) {
 				Transform3DTranslate translate = new Transform3DTranslate ();
