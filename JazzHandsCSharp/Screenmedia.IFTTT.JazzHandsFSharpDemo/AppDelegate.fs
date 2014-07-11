@@ -49,7 +49,7 @@ type JHViewController() as this =
     override this.ViewDidLoad () = 
         base.ViewDidLoad ()
 
-        base.ScrollView.ContentSize = new SizeF (numberOfPages * this.View.Frame.Width, this.View.Frame.Height)
+        base.ScrollView.ContentSize <-  new SizeF (numberOfPages * this.View.Frame.Width, this.View.Frame.Height)
 
         base.ScrollView.PagingEnabled <- true
         base.ScrollView.ShowsHorizontalScrollIndicator <- false
