@@ -130,7 +130,7 @@ Global
 		{ACC22A50-14B9-4D1B-A7B2-CDAAEA1092BE}.Release|Mixed Platforms.Deploy.0 = Release|iPhone
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Screenmedia.IFTTT.JazzHandsFSharpDemo\Screenmedia.IFTTT.JazzHandsFSharpDemo.fsproj
+		StartupItem = Screenmedia.IFTTT.JazzHandsDemo\Screenmedia.IFTTT.JazzHandsDemo.csproj
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
