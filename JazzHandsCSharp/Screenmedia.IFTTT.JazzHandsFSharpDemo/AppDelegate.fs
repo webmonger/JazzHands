@@ -1,6 +1,8 @@
 ﻿namespace Screenmedia.IFTTT.JazzHandsFSharpDemo
 
 open System
+open System.Linq
+open System.Collections.Generic
 open System.Drawing
 open MonoTouch.UIKit
 open MonoTouch.Foundation
@@ -9,7 +11,7 @@ open Screenmedia.IFTTT.JazzHands
 type JHViewController() as this =
     inherit AnimatedScrollViewController() 
 
-    let timeForPage page = this.View.Frame.Size.Width * (page - 1.0f)
+    let timeForPage page : int = (int)this.View.Frame.Size.Width * (page - 1)
 
     let addLabel text isOffset page y : UILabel = 
         let l = new UILabel()
@@ -18,7 +20,8 @@ type JHViewController() as this =
         l.Center <- this.View.Center
         if isOffset then
             let rect : RectangleF = l.Frame
-            rect.Offset (new PointF (timeForPage (page), y))
+            let pageOffSet = timeForPage (page)
+            rect.Offset (new PointF (float32 pageOffSet, y))
             l.Frame <- rect
         l
 
@@ -70,33 +73,58 @@ type JHViewController() as this =
         wordmark.Frame <- rect2;
         base.ScrollView.AddSubview(wordmark);
 
-        let firstLabel : UILabel = addLabel "Introducing Jazz Hands" false 0.0f 0.0f
+        let firstLabel : UILabel = addLabel "Introducing Jazz Hands" false 0 0.0f
         base.ScrollView.AddSubview(firstLabel)
-        let secondPageText : UILabel = addLabel "Brought to you by IFTTT" true 2.0f 180.0f
+        let secondPageText : UILabel = addLabel "Brought to you by IFTTT" true 2 180.0f
         base.ScrollView.AddSubview(secondPageText)
-        let thirdPageText : UILabel = addLabel "Simple keyframe animations" true 3.0f -100.0f
+        let thirdPageText : UILabel = addLabel "Simple keyframe animations" true 3 -100.0f
         base.ScrollView.AddSubview(thirdPageText)
-        let fourthPageText : UILabel = addLabel "Optimized for scrolling intros" true 4.0f 0.0f
+        let fourthPageText : UILabel = addLabel "Optimized for scrolling intros" true 4 0.0f
         base.ScrollView.AddSubview(fourthPageText)
 
         // Configure Animation
-//        let dy = 240
+        let dy : float32 = 240.0f
 
         // let's animate the wordmark
-//        var wordmarkFrameAnimation = new FrameAnimation(Wordmark);
-//        Animator.AddAnimation(wordmarkFrameAnimation);
-//
-//        var newAnimaitons = new List<AnimationKeyFrame> ();
-//
-//        var temp1 = Wordmark.Frame;
-//        temp1.Offset (new PointF (200, 0));
-//
-//        newAnimaitons.Add (new AnimationKeyFrame () {
-//            Time = TimeForPage (1),
-//            Frame = temp1
-//        });
-//
-//        newAnimaitons.Add (new AnimationKeyFrame() {Time = TimeForPage(2), Frame = Wordmark.Frame});
+        let wordmarkFrameAnimation = new FrameAnimation(wordmark)
+        base.Animator.AddAnimation(wordmarkFrameAnimation)
+
+        let newAnimaitons = new List<AnimationKeyFrame>()
+
+        let temp1 = wordmark.Frame;
+        temp1.Offset (new PointF (200.0f, 0.0f));
+
+        let animationKeyFrame1 = new AnimationKeyFrame ()
+        animationKeyFrame1.Time <- timeForPage(1)
+        animationKeyFrame1.Frame <- temp1
+
+        newAnimaitons.Add (animationKeyFrame1)
+
+        let animationKeyFrame2 = new AnimationKeyFrame ()
+        animationKeyFrame2.Time <- timeForPage(2)
+        animationKeyFrame2.Frame <- wordmark.Frame
+
+        newAnimaitons.Add (animationKeyFrame2)
+
+        let temp2 = wordmark.Frame;
+        temp2.Offset (new PointF (base.View.Frame.Width, dy));
+
+        let animationKeyFrame3 = new AnimationKeyFrame ()
+        animationKeyFrame3.Time <- timeForPage (3)
+        animationKeyFrame3.Frame <- temp2
+
+        newAnimaitons.Add (animationKeyFrame3)
+
+        let temp3 = wordmark.Frame;
+        temp3.Offset (new PointF (0.0f, dy));
+
+        let animationKeyFrame4 = new AnimationKeyFrame ()
+        animationKeyFrame4.Time <- timeForPage (4)
+        animationKeyFrame4.Frame <- temp3
+
+        newAnimaitons.Add (animationKeyFrame4)
+
+        wordmarkFrameAnimation.AddKeyFrames(newAnimaitons);
 
 
     interface IAnimatedScrollViewController with
