@@ -104,8 +104,8 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 	        Transform3D tt1 = new Transform3D() {M34 = 0.03f};
 	        Transform3D tt2 = new Transform3D() {M34 = 0.3f};
 	        tt2.Rotate = new Transform3DRotate {Angle = Convert.ToSingle(Math.PI), X = 1, Y = 0, Z = 0};
-	        tt2.Translate = new Transform3DTranslate() {Tx = 200, Ty = 200, Tz = -50};
-			tt2.Scale = new Transform3DScale(){ Sx = 1.0f,Sy = 2.0f,Sz = 1.0f };
+	        tt2.Translate = new Transform3DTranslate() {Tx = 320, Ty = 150, Tz = -50};
+			tt2.Scale = new Transform3DScale(){ Sx = 1.0f,Sy = 1.0f,Sz = 1.0f };
 	        labelTransform.AddKeyFrame(new AnimationKeyFrame()
 	        {
 	            Time= TimeForPage(0),
@@ -121,11 +121,11 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 	            Time = TimeForPage(1.5f),
 	            Transform = tt2
 	        });
-	        labelTransform.AddKeyFrame(new AnimationKeyFrame()
-	        {
-	            Time = TimeForPage(1.5f) + 1,
-	            Alpha = 0.0f
-	        });
+//	        labelTransform.AddKeyFrame(new AnimationKeyFrame()
+//	        {
+//	            Time = TimeForPage(1.5f) + 1,
+//	            Alpha = 0.0f
+//	        });
 	        Animator.AddAnimation(labelTransform);
 
 	        // let's animate the wordmark
