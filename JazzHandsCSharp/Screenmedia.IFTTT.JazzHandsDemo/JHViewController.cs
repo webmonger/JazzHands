@@ -13,12 +13,14 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 {
 	public class JHViewController : AnimatedScrollViewController, IAnimatedScrollViewController
 	{
-		private const int NumberOfPages = 4;
+		private const int NumberOfPages = 5;
 
 		public UIImageView Wordmark { get; set;}
 		public UIImageView Unicorn { get; set;}
 		public UILabel LastLabel { get; set;}
 		public UILabel FirstLabel { get; set;}
+		public UITextField InputText { get; set;}
+		public UIButton InputButton { get; set;}
 
 
 		public override void DidReceiveMemoryWarning ()
@@ -72,6 +74,11 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 			UILabel fourthPageText = AddLabel ("Optimized for scrolling intros", true, 4, 0);
 			ScrollView.AddSubview(fourthPageText);
 
+			InputText = AddTextField ("Animation Test", true, 5, 0);
+
+			ScrollView.Add (InputText);
+
+
 			LastLabel = fourthPageText;
 		}
 
@@ -87,6 +94,22 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 			l.Text = text;
 			l.SizeToFit();
 			l.Center = View.Center;
+			if (IsOffset) 
+			{
+				var rect = l.Frame;
+				rect.Offset (new PointF (TimeForPage (page), y));
+				l.Frame = rect;
+			}
+			return l;
+		}
+
+		private UITextField AddTextField(string text, bool IsOffset, int page = 0, float y = 0)
+		{
+			var l = new UITextField();
+			l.Text = text;
+			l.SizeToFit();
+			l.Center = View.Center;
+			l.BackgroundColor = UIColor.Gray;
 			if (IsOffset) 
 			{
 				var rect = l.Frame;
@@ -244,6 +267,20 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 					Alpha = 0.0f
 				});
 			Animator.AddAnimation(labelAlphaAnimation);
+
+			//Constraint Animation on textfield of last page
+
+			ConstraintsAnimation textFieldConstraintAnimation = new ConstraintsAnimation (this.InputText);
+
+			textFieldConstraintAnimation.AddKeyFrame (new AnimationKeyFrame ()
+				{ 
+					Time = TimeForPage(5),
+					constraintConstant=50.0f,
+					Frame=InputText.Frame
+				});
+
+
+			Animator.AddAnimation(textFieldConstraintAnimation);
 			
 		}
 

@@ -25,7 +25,7 @@ namespace Screenmedia.IFTTT.JazzHands
 
 			View.Frame = animationFrame.Frame;
 
-			View.SetNeedsLayout ();
+			View.LayoutIfNeeded ();
 		}
 
 		public override AnimationFrame FrameForTime(int time,

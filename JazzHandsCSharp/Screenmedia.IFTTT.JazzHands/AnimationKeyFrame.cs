@@ -260,6 +260,7 @@ namespace Screenmedia.IFTTT.JazzHands
         Angle,
         Transform,
         Scale,
+		constraintConstant
     }
 }
 
