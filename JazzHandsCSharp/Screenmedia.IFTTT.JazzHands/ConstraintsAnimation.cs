@@ -17,13 +17,18 @@ namespace Screenmedia.IFTTT.JazzHands
 
 			AnimationFrame animationFrame = AnimationFrameForTime(time);
 
-			NSLayoutConstraint viewConstraint = new NSLayoutConstraint ();
-
-			viewConstraint.Constant=animationFrame.constraintConstant;
-
-			View.AddConstraint (viewConstraint);
+//			NSLayoutConstraint viewConstraint = new NSLayoutConstraint ();
+//			viewConstraint.Constant=animationFrame.constraintConstant;
 
 			View.Frame = animationFrame.Frame;
+
+			View.TranslatesAutoresizingMaskIntoConstraints = false;
+
+			var textFieldTopConstraint = NSLayoutConstraint.Create (View, NSLayoutAttribute.Top, NSLayoutRelation.GreaterThanOrEqual, null, NSLayoutAttribute.Top, 1.0f, animationFrame.constraintConstant);
+			var textFieldBottomConstraint = NSLayoutConstraint.Create (View, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, null, NSLayoutAttribute.Bottom, 1.0f, 0f);
+			View.AddConstraints (new NSLayoutConstraint[] {textFieldTopConstraint, textFieldBottomConstraint }); 
+
+			//View.AddConstraint (viewConstraint);
 
 			View.LayoutIfNeeded ();
 		}
