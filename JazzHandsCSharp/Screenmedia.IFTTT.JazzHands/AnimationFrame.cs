@@ -13,6 +13,7 @@ namespace Screenmedia.IFTTT.JazzHands
         public Single Angle;
 		public Transform3D Transform = new Transform3D();
         public Single Scale;
+		public Single constraintConstant;
 	}
 }
 
