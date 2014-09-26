@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="src\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,6 +54,7 @@
     <Compile Include="ScaleAnimation.cs" />
     <Compile Include="Transform3DAnimation.cs" />
     <Compile Include="Transform3D.cs" />
+    <Compile Include="ConstraintsAnimation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
 </Project>

@@ -13,12 +13,14 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 {
 	public class JHViewController : AnimatedScrollViewController, IAnimatedScrollViewController
 	{
-		private const int NumberOfPages = 4;
+		private const int NumberOfPages = 5;
 
 		public UIImageView Wordmark { get; set;}
 		public UIImageView Unicorn { get; set;}
 		public UILabel LastLabel { get; set;}
 		public UILabel FirstLabel { get; set;}
+		public UITextField InputText { get; set;}
+		public UIButton InputButton { get; set;}
 
 
 		public override void DidReceiveMemoryWarning ()
@@ -72,6 +74,25 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 			UILabel fourthPageText = AddLabel ("Optimized for scrolling intros", true, 4, 0);
 			ScrollView.AddSubview(fourthPageText);
 
+			InputText = AddTextField ("Animation Test", true, 5, 0);
+
+			//InputText.TranslatesAutoresizingMaskIntoConstraints = false;
+
+			InputText.AddConstraints (new[] {
+				NSLayoutConstraint.Create (InputText, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 30),
+				NSLayoutConstraint.Create (InputText, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 180),
+			});
+
+
+			ScrollView.Add (InputText);
+
+			ScrollView.AddConstraints (new[] {
+				NSLayoutConstraint.Create (InputText, NSLayoutAttribute.Left, NSLayoutRelation.Equal, ScrollView, NSLayoutAttribute.Left, 1, (View.Frame.Size.Width * 4)+50),
+				NSLayoutConstraint.Create (InputText, NSLayoutAttribute.Top, NSLayoutRelation.Equal, ScrollView, NSLayoutAttribute.Top, 1, 130),
+			});
+
+			View.LayoutIfNeeded ();
+
 			LastLabel = fourthPageText;
 		}
 
@@ -87,6 +108,22 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 			l.Text = text;
 			l.SizeToFit();
 			l.Center = View.Center;
+			if (IsOffset) 
+			{
+				var rect = l.Frame;
+				rect.Offset (new PointF (TimeForPage (page), y));
+				l.Frame = rect;
+			}
+			return l;
+		}
+
+		private UITextField AddTextField(string text, bool IsOffset, int page = 0, float y = 0)
+		{
+			var l = new UITextField();
+			l.Text = text;
+			l.SizeToFit();
+			l.Center = View.Center;
+			l.BackgroundColor = UIColor.Gray;
 			if (IsOffset) 
 			{
 				var rect = l.Frame;
@@ -244,6 +281,32 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 					Alpha = 0.0f
 				});
 			Animator.AddAnimation(labelAlphaAnimation);
+
+			//Constraint Animation on textfield of last page
+
+			ConstraintsAnimation textFieldConstraintAnimation = new ConstraintsAnimation (this.InputText);
+
+			textFieldConstraintAnimation.AddKeyFrame (new AnimationKeyFrame ()
+				{ 
+					Time = TimeForPage(4),
+					constraintConstant=180
+				});
+
+			textFieldConstraintAnimation.AddKeyFrame (new AnimationKeyFrame ()
+				{ 
+					Time = TimeForPage(4.50f),
+					constraintConstant=200
+				});
+
+			textFieldConstraintAnimation.AddKeyFrame (new AnimationKeyFrame ()
+				{ 
+					Time = TimeForPage(5),
+					constraintConstant=80
+				});
+
+
+
+			Animator.AddAnimation(textFieldConstraintAnimation);
 			
 		}
 
