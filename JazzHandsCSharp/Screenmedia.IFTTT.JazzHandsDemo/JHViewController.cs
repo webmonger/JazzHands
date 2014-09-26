@@ -78,14 +78,20 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 
 			//InputText.TranslatesAutoresizingMaskIntoConstraints = false;
 
+			InputText.AddConstraints (new[] {
+				NSLayoutConstraint.Create (InputText, NSLayoutAttribute.Height, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 30),
+				NSLayoutConstraint.Create (InputText, NSLayoutAttribute.Width, NSLayoutRelation.Equal, null, NSLayoutAttribute.NoAttribute, 1, 180),
+			});
+
+
 			ScrollView.Add (InputText);
 
-			var txtTopConstraint = NSLayoutConstraint.Create (InputText, NSLayoutAttribute.Top, NSLayoutRelation.GreaterThanOrEqual, null, NSLayoutAttribute.Top, 1.0f, -20.0f);
-			var txtBottomConstraint = NSLayoutConstraint.Create (InputText, NSLayoutAttribute.Bottom, NSLayoutRelation.Equal, null, NSLayoutAttribute.Bottom, 1.0f, 0f);
-			View.AddConstraints (new NSLayoutConstraint[] {txtTopConstraint, txtBottomConstraint }); 
+			ScrollView.AddConstraints (new[] {
+				NSLayoutConstraint.Create (InputText, NSLayoutAttribute.Left, NSLayoutRelation.Equal, ScrollView, NSLayoutAttribute.Left, 1, (View.Frame.Size.Width * 4)+50),
+				NSLayoutConstraint.Create (InputText, NSLayoutAttribute.Top, NSLayoutRelation.Equal, ScrollView, NSLayoutAttribute.Top, 1, 130),
+			});
 
 			View.LayoutIfNeeded ();
-
 
 			LastLabel = fourthPageText;
 		}
@@ -282,14 +288,22 @@ namespace Screenmedia.IFTTT.JazzHandsDemo
 
 			textFieldConstraintAnimation.AddKeyFrame (new AnimationKeyFrame ()
 				{ 
-					Time = TimeForPage(4.35f),
-					constraintConstant=-20.0f
+					Time = TimeForPage(4),
+					constraintConstant=180
 				});
+
+			textFieldConstraintAnimation.AddKeyFrame (new AnimationKeyFrame ()
+				{ 
+					Time = TimeForPage(4.50f),
+					constraintConstant=200
+				});
+
 			textFieldConstraintAnimation.AddKeyFrame (new AnimationKeyFrame ()
 				{ 
 					Time = TimeForPage(5),
-					constraintConstant=50.0f
+					constraintConstant=80
 				});
+
 
 
 			Animator.AddAnimation(textFieldConstraintAnimation);
